@@ -11,7 +11,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products">
+                    <tr *ngFor="let product of products" (click)="onClick(product)"
+                        [ngClass]="{'table-primary' : product.id === chosenProduct?.id}">
                         <th scope="row">{{product.id}}</th>
                         <td>{{product.productName}}<span>{{product.productCode}}</span></td>
                         <td>{{product.description}}</td>
@@ -21,7 +22,7 @@
             </table>
         </div>
         <div class=" col-md-7">
-            <app-products-edit></app-products-edit>
+            <app-products-edit [chosenProduct]="chosenProduct"></app-products-edit>
         </div>
     </div>
 </div>

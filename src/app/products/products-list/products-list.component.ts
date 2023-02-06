@@ -10,6 +10,7 @@ import { ProductsService } from '../services/products.service';
 export class ProductsListComponent implements OnInit {
 
   products!: Product[];
+  chosenProduct: Product | undefined;
   errorMessage!: string;
 
   constructor(private productService: ProductsService) { }
@@ -19,5 +20,11 @@ export class ProductsListComponent implements OnInit {
       next: products => this.products = products,
       error: err => this.errorMessage = err
     });
+  }
+
+  onClick(product: Product): void {
+    console.log(this.chosenProduct);
+    this.chosenProduct = product;
+    console.log(this.chosenProduct);
   }
 }
