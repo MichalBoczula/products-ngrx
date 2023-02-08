@@ -12,6 +12,7 @@ export class ProductsListComponent implements OnInit {
   products!: Product[];
   chosenProduct: Product | undefined;
   errorMessage!: string;
+  displayCode: boolean = false;
 
   constructor(private productService: ProductsService) { }
 
@@ -26,5 +27,9 @@ export class ProductsListComponent implements OnInit {
     console.log(this.chosenProduct);
     this.chosenProduct = product;
     console.log(this.chosenProduct);
+  }
+
+  showProductCode(): void {
+    this.displayCode = !this.displayCode;
   }
 }

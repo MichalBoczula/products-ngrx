@@ -14,12 +14,13 @@
                     <tr *ngFor="let product of products" (click)="onClick(product)"
                         [ngClass]="{'table-primary' : product.id === chosenProduct?.id}">
                         <th scope="row">{{product.id}}</th>
-                        <td>{{product.productName}}<span>{{product.productCode}}</span></td>
+                        <td>{{product.productName}} <span *ngIf="displayCode">{{product.productCode}}</span></td>
                         <td>{{product.description}}</td>
                         <td>{{product.price |currency:'EUR':true}}</td>
                     </tr>
                 </tbody>
             </table>
+            <button class="btn btn-primary" (click)="showProductCode()">Show product code</button>
         </div>
         <div class=" col-md-7">
             <app-products-edit [chosenProduct]="chosenProduct"></app-products-edit>
