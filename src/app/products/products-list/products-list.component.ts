@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductsService } from '../services/products.service';
+import { getShowProductCode, State } from '../state/product.reducer';
 
 @Component({
   selector: 'app-products-list',
@@ -15,12 +16,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   errorMessage!: string;
   displayCode: boolean = false;
 
-  constructor(private productService: ProductsService, private store: Store<any>) { }
+  constructor(private productService: ProductsService, private store: Store<State>) { }
 
   ngOnInit(): void {
-    this.store.select('products').subscribe(
-      products => {
-        this.displayCode = products.showProductCode
+    this.store.select(getShowProductCode).subscribe(
+      showProductCode => {
+        this.displayCode = showProductCode
       }
     );
 
