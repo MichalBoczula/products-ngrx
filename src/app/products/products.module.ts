@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ProductsListComponent } from './products-list/products-list.component';
 import { ProductsEditComponent } from './products-edit/products-edit.component';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { ProductReducer } from './state/product.reducer';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forFeature('products', ProductReducer)
   ],
   exports: [
     ProductsListComponent

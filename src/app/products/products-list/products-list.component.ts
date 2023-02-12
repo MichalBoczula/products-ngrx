@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductsService } from '../services/products.service';
 
@@ -7,20 +8,29 @@ import { ProductsService } from '../services/products.service';
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css']
 })
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy {
 
   products!: Product[];
   chosenProduct: Product | undefined;
   errorMessage!: string;
   displayCode: boolean = false;
 
-  constructor(private productService: ProductsService) { }
+  constructor(private productService: ProductsService, private store: Store<any>) { }
 
   ngOnInit(): void {
+    this.store.select('products').subscribe(
+      products => {
+        this.displayCode = products.showProductCode
+      }
+    );
+
     this.productService.getProducts().subscribe({
       next: products => this.products = products,
       error: err => this.errorMessage = err
     });
+  }
+
+  ngOnDestroy(): void {
   }
 
   onClick(product: Product): void {
@@ -30,6 +40,8 @@ export class ProductsListComponent implements OnInit {
   }
 
   showProductCode(): void {
-    this.displayCode = !this.displayCode;
+    this.store.dispatch(
+      { type: 'Toggle product code' }
+    )
   }
 }
