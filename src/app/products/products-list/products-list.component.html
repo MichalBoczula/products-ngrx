@@ -11,8 +11,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products" (click)="onClick(product)"
-                        [ngClass]="{'table-primary' : product.id === chosenProduct?.id}">
+                    <tr *ngFor="let product of products" (click)="selectProduct(product)"
+                        [ngClass]="{'table-primary' : product.id === chosenProductId}">
                         <th scope="row">{{product.id}}</th>
                         <td>{{product.productName}} <span *ngIf="displayCode">{{product.productCode}}</span></td>
                         <td>{{product.description}}</td>
@@ -21,9 +21,10 @@
                 </tbody>
             </table>
             <button class="btn btn-primary" (click)="showProductCode()">Show product code</button>
+            <button class="btn btn-primary" (click)="addProduct()">Add new product</button>
         </div>
         <div class=" col-md-7">
-            <app-products-edit [chosenProduct]="chosenProduct"></app-products-edit>
+            <app-products-edit></app-products-edit>
         </div>
     </div>
 </div>

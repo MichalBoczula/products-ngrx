@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductsService } from '../services/products.service';
-import { getShowProductCode, State } from '../state/product.reducer';
+import { ProductReducerState } from '../state/product.reducer';
+import { getShowProductCode } from '../state/product.selectors';
+import * as ProductAction from '../state/product.actions';
 
 @Component({
   selector: 'app-products-list',
@@ -15,8 +17,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   chosenProduct: Product | undefined;
   errorMessage!: string;
   displayCode: boolean = false;
+  chosenProductId?: Number;
 
-  constructor(private productService: ProductsService, private store: Store<State>) { }
+  constructor(private productService: ProductsService, private store: Store<ProductReducerState>) { }
 
   ngOnInit(): void {
     this.store.select(getShowProductCode).subscribe(
@@ -34,15 +37,18 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  onClick(product: Product): void {
-    console.log(this.chosenProduct);
-    this.chosenProduct = product;
-    console.log(this.chosenProduct);
+  selectProduct(product: Product): void {
+    this.chosenProductId = product.id;
+    this.store.dispatch(ProductAction.setCurrentProduct({ product }));
+  }
+
+  addProduct(): void {
+    this.store.dispatch(ProductAction.initializeNewProduct());
   }
 
   showProductCode(): void {
     this.store.dispatch(
-      { type: 'Toggle product code' }
+      ProductAction.toggleProductCode()
     )
   }
 }
