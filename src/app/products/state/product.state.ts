@@ -4,5 +4,6 @@ export interface ProductState {
     showProductCode: boolean,
     currentProductId: Number,
     currentProduct?: Product
-    products: Product[]
+    products: Product[],
+    isEditMode: boolean
 };

@@ -29,3 +29,8 @@ export const getProducts = createSelector(
     getProductFeatureState,
     state => state.products
 );
+
+export const getIsEditMode = createSelector(
+    getProductFeatureState,
+    state => state.isEditMode
+);

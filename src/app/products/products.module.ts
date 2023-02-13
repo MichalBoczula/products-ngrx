@@ -5,11 +5,13 @@ import { ProductsEditComponent } from './products-edit/products-edit.component';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { ProductReducer } from './state/product.reducer';
+import { ProductsAddComponent } from './products-add/products-add/products-add.component';
 
 @NgModule({
   declarations: [
     ProductsListComponent,
-    ProductsEditComponent
+    ProductsEditComponent,
+    ProductsAddComponent
   ],
   imports: [
     CommonModule,

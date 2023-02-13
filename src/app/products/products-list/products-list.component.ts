@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductsService } from '../services/products.service';
 import { ProductReducerState } from '../state/product.reducer';
-import { getShowProductCode } from '../state/product.selectors';
+import { getCurrentProductId, getIsEditMode, getShowProductCode } from '../state/product.selectors';
 import * as ProductAction from '../state/product.actions';
 
 @Component({
@@ -18,6 +18,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   errorMessage!: string;
   displayCode: boolean = false;
   chosenProductId?: Number;
+  isEditMode?: Number;
 
   constructor(private productService: ProductsService, private store: Store<ProductReducerState>) { }
 
@@ -28,21 +29,48 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.store.select(getCurrentProductId).subscribe(
+      productId => {
+        this.chosenProductId = productId
+      }
+    );
+
     this.productService.getProducts().subscribe({
       next: products => this.products = products,
       error: err => this.errorMessage = err
     });
+    this.productService.getProducts().subscribe({
+      next: products => this.products = products,
+      error: err => this.errorMessage = err
+    });
+
   }
 
   ngOnDestroy(): void {
   }
 
   selectProduct(product: Product): void {
-    this.chosenProductId = product.id;
-    this.store.dispatch(ProductAction.setCurrentProduct({ product }));
+    let editMode;
+
+    this.store.select(getIsEditMode)
+      .subscribe(
+        isEditMode => {
+          editMode = isEditMode
+        }
+      );
+
+    if (editMode) {
+      alert('Brooo!!!!');
+    }
+    else {
+      this.store.dispatch(ProductAction.setCurrentProductId({ productId: product.id }));
+      this.store.dispatch(ProductAction.setCurrentProduct({ product }));
+    }
   }
 
   addProduct(): void {
+    this.store.dispatch(ProductAction.setIsEditModeOnTrue());
+    this.store.dispatch(ProductAction.setCurrentProductId({ productId: 0 }));
     this.store.dispatch(ProductAction.initializeNewProduct());
   }
 

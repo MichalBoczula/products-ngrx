@@ -1,5 +1,4 @@
-import { createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { Product } from "../product-model";
+import { createReducer, on } from "@ngrx/store";
 import * as ProductAction from './product.actions';
 import { ProductState } from "./product.state";
 
@@ -11,7 +10,8 @@ const initialState: ProductState = {
     showProductCode: false,
     currentProductId: 0,
     currentProduct: undefined,
-    products: []
+    products: [],
+    isEditMode: false
 };
 
 export const ProductReducer = createReducer<ProductState>(
@@ -31,7 +31,7 @@ export const ProductReducer = createReducer<ProductState>(
     on(ProductAction.clearCurrentProduct, (state): ProductState => {
         return {
             ...state,
-            showProductCode: !state.showProductCode
+            currentProduct: undefined
         }
     }),
     on(ProductAction.initializeNewProduct, (state): ProductState => {
@@ -44,6 +44,24 @@ export const ProductReducer = createReducer<ProductState>(
                 description: '',
                 price: 0
             }
+        }
+    }),
+    on(ProductAction.setIsEditModeOnFalse, (state): ProductState => {
+        return {
+            ...state,
+            isEditMode: false
+        }
+    }),
+    on(ProductAction.setIsEditModeOnTrue, (state): ProductState => {
+        return {
+            ...state,
+            isEditMode: true
+        }
+    }),
+    on(ProductAction.setCurrentProductId, (state, action): ProductState => {
+        return {
+            ...state,
+            currentProductId: action.productId
         }
     })
 );

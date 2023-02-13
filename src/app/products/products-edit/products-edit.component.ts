@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductReducerState } from '../state/product.reducer';
-import { getCurrentProduct } from '../state/product.selectors';
-
+import { getCurrentProduct, getIsEditMode } from '../state/product.selectors';
 
 @Component({
   selector: 'app-products-edit',
@@ -12,6 +11,7 @@ import { getCurrentProduct } from '../state/product.selectors';
 })
 export class ProductsEditComponent implements OnInit {
   chosenProduct?: Product;
+  isEditMode!: boolean;
 
   constructor(private store: Store<ProductReducerState>) { }
 
@@ -22,13 +22,11 @@ export class ProductsEditComponent implements OnInit {
           this.chosenProduct = currentProduct
         }
       );
-  }
-
-  product: Product = {
-    id: 1,
-    productName: 'test',
-    productCode: 'tesCode',
-    description: 'desc',
-    price: 10.99
+    this.store.select(getIsEditMode)
+      .subscribe(
+        isEditMode => {
+          this.isEditMode = isEditMode
+        }
+      );
   }
 }

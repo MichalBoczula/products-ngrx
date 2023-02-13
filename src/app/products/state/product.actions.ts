@@ -18,6 +18,19 @@ export const initializeNewProduct = createAction(
     'Initialize current roduct'
 );
 
+export const setIsEditModeOnTrue = createAction(
+    'Set is edit mode on true'
+);
+
+export const setIsEditModeOnFalse = createAction(
+    'Set is edit mode on false'
+);
+
+export const setCurrentProductId = createAction(
+    'Set current product id',
+    props<{ productId: Number }>()
+);
+
 export const loadProducts = createAction(
     'Loading products array ... '
 );
