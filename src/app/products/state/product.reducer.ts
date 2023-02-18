@@ -11,7 +11,8 @@ const initialState: ProductState = {
     currentProductId: 0,
     currentProduct: undefined,
     products: [],
-    isEditMode: false
+    isEditMode: false,
+    error: ''
 };
 
 export const ProductReducer = createReducer<ProductState>(
@@ -62,6 +63,20 @@ export const ProductReducer = createReducer<ProductState>(
         return {
             ...state,
             currentProductId: action.productId
+        }
+    }),
+    on(ProductAction.loadProductsSuccess, (state, action): ProductState => {
+        return {
+            ...state,
+            products: action.products,
+            error: ''
+        }
+    }),
+    on(ProductAction.loadProductsFailure, (state, action): ProductState => {
+        return {
+            ...state,
+            products: [],
+            error: action.error
         }
     })
 );

@@ -8,28 +8,22 @@ import { Product } from '../product-model';
 })
 export class ProductsService {
 
-  private products: Product[] = [];
+  // private products: Product[] = [];
   private productUrl: string = 'http://localhost:4201/api/products';
 
   constructor(private httpClient: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    if (!!this.products.length) {
-      return of(this.products);
-    }
-    else {
-      return this.httpClient.get<Product[]>(this.productUrl)
-        .pipe(
-          tap(data => console.log(JSON.stringify(data))),
-          tap(data => this.products = data),
-          catchError(this.handleError)
-        )
-    }
-  }
-
-  private handleError(err: any) {
-    const errorMessage = err.error.message;
-    console.error(errorMessage);
-    return throwError(errorMessage);
+    // if (!!this.products.length) {
+    //   return of(this.products);
+    // }
+    // else {
+    return this.httpClient.get<Product[]>(this.productUrl)
+      .pipe(
+        tap(data => console.log(JSON.stringify(data))),
+        // tap(data => this.products = data),
+        catchError(x => throwError(x.message))
+      )
+    // }
   }
 }

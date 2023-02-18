@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { ProductReducer } from './state/product.reducer';
 import { ProductsAddComponent } from './products-add/products-add/products-add.component';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffects } from './state/product.effects';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { ProductsAddComponent } from './products-add/products-add/products-add.c
   imports: [
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature('products', ProductReducer)
+    StoreModule.forFeature('products', ProductReducer),
+    EffectsModule.forFeature([ProductEffects])
   ],
   exports: [
     ProductsListComponent

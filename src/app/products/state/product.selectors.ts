@@ -34,3 +34,8 @@ export const getIsEditMode = createSelector(
     getProductFeatureState,
     state => state.isEditMode
 );
+
+export const getError = createSelector(
+    getProductFeatureState,
+    state => state.error
+);

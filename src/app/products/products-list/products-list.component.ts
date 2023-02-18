@@ -3,63 +3,75 @@ import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
 import { ProductsService } from '../services/products.service';
 import { ProductReducerState } from '../state/product.reducer';
-import { getCurrentProductId, getIsEditMode, getShowProductCode } from '../state/product.selectors';
+import { getCurrentProductId, getError, getIsEditMode, getProducts, getShowProductCode } from '../state/product.selectors';
 import * as ProductAction from '../state/product.actions';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.css']
 })
-export class ProductsListComponent implements OnInit, OnDestroy {
+export class ProductsListComponent implements OnInit {
 
-  products!: Product[];
-  chosenProduct: Product | undefined;
-  errorMessage!: string;
-  displayCode: boolean = false;
-  chosenProductId?: Number;
-  isEditMode?: Number;
+  // Without NgRx Effect
+  // products!: Product[];
+  // displayCode: boolean = false;
+  // chosenProductId?: Number;
+  // isEditMode?: Number;
+  // errorMessage?: string;
+  products$?: Observable<Product[]>;
+  displayCode$?: Observable<boolean>;
+  chosenProductId$?: Observable<Number>;
+  isEditMode$?: Observable<Boolean>;
+  errorMessage$?: Observable<String>;
 
-  constructor(private productService: ProductsService, private store: Store<ProductReducerState>) { }
+  constructor(private store: Store<ProductReducerState>) { }
 
   ngOnInit(): void {
-    this.store.select(getShowProductCode).subscribe(
-      showProductCode => {
-        this.displayCode = showProductCode
-      }
-    );
+    // without NgRx Effect
+    // this.store.select(getShowProductCode).subscribe(
+    //   showProductCode => {
+    //     this.displayCode = showProductCode
+    //   }
+    // );
 
-    this.store.select(getCurrentProductId).subscribe(
-      productId => {
-        this.chosenProductId = productId
-      }
-    );
+    // this.store.select(getCurrentProductId).subscribe(
+    //   productId => {
+    //     this.chosenProductId = productId
+    //   }
+    // );
 
-    this.productService.getProducts().subscribe({
-      next: products => this.products = products,
-      error: err => this.errorMessage = err
-    });
-    this.productService.getProducts().subscribe({
-      next: products => this.products = products,
-      error: err => this.errorMessage = err
-    });
+    // this.productService.getProducts().subscribe({
+    //   next: products => this.products = products,
+    //   error: err => this.errorMessage = err
+    // });
+    // this.productService.getProducts().subscribe({
+    //   next: products => this.products = products,
+    //   error: err => this.errorMessage = err
+    // });
 
-  }
+    this.chosenProductId$ = this.store.select(getCurrentProductId);
 
-  ngOnDestroy(): void {
+    this.displayCode$ = this.store.select(getShowProductCode)
+
+    this.products$ = this.store.select(getProducts);
+
+    this.isEditMode$ = this.store.select(getIsEditMode);
+
+    this.errorMessage$ = this.store.select(getError);
+
+    this.store.dispatch(ProductAction.loadProducts());
   }
 
   selectProduct(product: Product): void {
-    let editMode;
+    let isEditMode;
 
-    this.store.select(getIsEditMode)
-      .subscribe(
-        isEditMode => {
-          editMode = isEditMode
-        }
-      );
+    this.isEditMode$?.subscribe(x => {
+      isEditMode = x
+    });
 
-    if (editMode) {
+    if (isEditMode) {
       alert('Brooo!!!!');
     }
     else {
