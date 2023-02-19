@@ -1,5 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
-import * as ProductAction from './product.actions';
+import * as ProductPageAction from './actions/product-page-actions';
+import * as ProductApiAction from './actions/product-api-actions';
 import { ProductState } from "./product.state";
 
 export interface ProductReducerState {
@@ -17,25 +18,25 @@ const initialState: ProductState = {
 
 export const ProductReducer = createReducer<ProductState>(
     initialState,
-    on(ProductAction.toggleProductCode, (state): ProductState => {
+    on(ProductPageAction.toggleProductCode, (state): ProductState => {
         return {
             ...state,
             showProductCode: !state.showProductCode
         }
     }),
-    on(ProductAction.setCurrentProduct, (state, action): ProductState => {
+    on(ProductPageAction.setCurrentProduct, (state, action): ProductState => {
         return {
             ...state,
             currentProduct: action.product
         }
     }),
-    on(ProductAction.clearCurrentProduct, (state): ProductState => {
+    on(ProductPageAction.clearCurrentProduct, (state): ProductState => {
         return {
             ...state,
             currentProduct: undefined
         }
     }),
-    on(ProductAction.initializeNewProduct, (state): ProductState => {
+    on(ProductPageAction.initializeNewProduct, (state): ProductState => {
         return {
             ...state,
             currentProduct: {
@@ -47,35 +48,47 @@ export const ProductReducer = createReducer<ProductState>(
             }
         }
     }),
-    on(ProductAction.setIsEditModeOnFalse, (state): ProductState => {
+    on(ProductPageAction.setIsEditModeOnFalse, (state): ProductState => {
         return {
             ...state,
             isEditMode: false
         }
     }),
-    on(ProductAction.setIsEditModeOnTrue, (state): ProductState => {
+    on(ProductPageAction.setIsEditModeOnTrue, (state): ProductState => {
         return {
             ...state,
             isEditMode: true
         }
     }),
-    on(ProductAction.setCurrentProductId, (state, action): ProductState => {
+    on(ProductPageAction.setCurrentProductId, (state, action): ProductState => {
         return {
             ...state,
             currentProductId: action.productId
         }
     }),
-    on(ProductAction.loadProductsSuccess, (state, action): ProductState => {
+    on(ProductApiAction.loadProductsSuccess, (state, action): ProductState => {
         return {
             ...state,
             products: action.products,
             error: ''
         }
     }),
-    on(ProductAction.loadProductsFailure, (state, action): ProductState => {
+    on(ProductApiAction.loadProductsFailure, (state, action): ProductState => {
         return {
             ...state,
             products: [],
+            error: action.error
+        }
+    }),
+    on(ProductApiAction.updateProductSuccess, (state, action): ProductState => {
+        console.log(action.productId);
+        return {
+            ...state
+        }
+    }),
+    on(ProductApiAction.updateProductFailure, (state, action): ProductState => {
+        return {
+            ...state,
             error: action.error
         }
     })

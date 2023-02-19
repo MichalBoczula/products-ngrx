@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Product } from '../product-model';
@@ -8,7 +8,8 @@ import { getCurrentProduct, getIsEditMode } from '../state/product.selectors';
 @Component({
   selector: 'app-products-edit',
   templateUrl: './products-edit.component.html',
-  styleUrls: ['./products-edit.component.css']
+  styleUrls: ['./products-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductsEditComponent implements OnInit {
   //Without NgRx Effets

@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../product-model';
-import { ProductsService } from '../services/products.service';
 import { ProductReducerState } from '../state/product.reducer';
 import { getCurrentProductId, getError, getIsEditMode, getProducts, getShowProductCode } from '../state/product.selectors';
-import * as ProductAction from '../state/product.actions';
+import * as ProductPageAction from '../state/actions/product-page-actions';
+import * as ProductApiAction from '../state/actions/product-api-actions';
 import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.css']
+  styleUrls: ['./products-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductsListComponent implements OnInit {
 
@@ -61,7 +62,7 @@ export class ProductsListComponent implements OnInit {
 
     this.errorMessage$ = this.store.select(getError);
 
-    this.store.dispatch(ProductAction.loadProducts());
+    this.store.dispatch(ProductApiAction.loadProducts());
   }
 
   selectProduct(product: Product): void {
@@ -75,20 +76,20 @@ export class ProductsListComponent implements OnInit {
       alert('Brooo!!!!');
     }
     else {
-      this.store.dispatch(ProductAction.setCurrentProductId({ productId: product.id }));
-      this.store.dispatch(ProductAction.setCurrentProduct({ product }));
+      this.store.dispatch(ProductPageAction.setCurrentProductId({ productId: product.id }));
+      this.store.dispatch(ProductPageAction.setCurrentProduct({ product }));
     }
   }
 
   addProduct(): void {
-    this.store.dispatch(ProductAction.setIsEditModeOnTrue());
-    this.store.dispatch(ProductAction.setCurrentProductId({ productId: 0 }));
-    this.store.dispatch(ProductAction.initializeNewProduct());
+    this.store.dispatch(ProductPageAction.setIsEditModeOnTrue());
+    this.store.dispatch(ProductPageAction.setCurrentProductId({ productId: 0 }));
+    this.store.dispatch(ProductPageAction.initializeNewProduct());
   }
 
   showProductCode(): void {
     this.store.dispatch(
-      ProductAction.toggleProductCode()
+      ProductPageAction.toggleProductCode()
     )
   }
 }

@@ -26,4 +26,8 @@ export class ProductsService {
       )
     // }
   }
+
+  updateProduct(): Observable<Number> {
+    throw new Error("Method not implemented.");
+  }
 }

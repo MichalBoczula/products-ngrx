@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Product } from '../../product-model';
 import { ProductReducerState } from '../../state/product.reducer';
 import { getCurrentProduct, getIsEditMode } from '../../state/product.selectors';
-import * as ProductAction from '../../state/product.actions';
+import * as ProductPageAction from './../../state/actions/product-page-actions';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-products-add',
   templateUrl: './products-add.component.html',
-  styleUrls: ['./products-add.component.css']
+  styleUrls: ['./products-add.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductsAddComponent {
   // Without NgRx Effects
@@ -41,7 +42,7 @@ export class ProductsAddComponent {
   }
 
   cancelEditMode(): void {
-    this.store.dispatch(ProductAction.setIsEditModeOnFalse());
-    this.store.dispatch(ProductAction.clearCurrentProduct());
+    this.store.dispatch(ProductPageAction.setIsEditModeOnFalse());
+    this.store.dispatch(ProductPageAction.clearCurrentProduct());
   }
 }
